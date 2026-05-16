@@ -1,0 +1,29 @@
+{
+  "name": "@ascii/parallax-reader",
+  "version": "0.1.0",
+  "description": "Standalone Three.js parallax asset loader - no source images required",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "peerDependencies": {
+    "three": ">=0.150.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.160.0",
+    "three": "^0.170.0",
+    "typescript": "^5.3.0"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "@ascii/web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ImageToASCII3D web app",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@ascii/core": "file:../../packages/core",
+    "@ascii/parallax-reader": "file:../../packages/parallax-reader",
+    "postprocessing": "^6.38.2",
+    "three": "^0.182.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.182.0",
+    "typescript": "^5.3.0",
+    "vite": "^5.0.0"
+  }
+}
