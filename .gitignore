@@ -5,6 +5,7 @@ node_modules/
 dist/
 apps/*/dist/
 packages/*/dist/
+src-tauri/target/
 
 # Logs and caches
 *.log

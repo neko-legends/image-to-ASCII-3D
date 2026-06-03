@@ -1,0 +1,43 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "ImageToASCII3D",
+  "version": "0.1.0",
+  "identifier": "public.image.to.ascii3d",
+  "build": {
+    "beforeDevCommand": "npm run build:packages && npm run dev --workspace @ascii/web",
+    "devUrl": "http://127.0.0.1:1440",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../apps/web/dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "ImageToASCII3D",
+        "width": 1920,
+        "height": 1080,
+        "minWidth": 640,
+        "minHeight": 360,
+        "resizable": true,
+        "fullscreen": false,
+        "decorations": true,
+        "dragDropEnabled": true,
+        "backgroundColor": "#050505"
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; img-src 'self' data: blob: asset: https://asset.localhost; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; connect-src ipc: http://ipc.localhost"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/icon.ico"
+    ],
+    "category": "GraphicsAndDesign",
+    "shortDescription": "Color image-to-ASCII converter with optional 3D parallax.",
+    "longDescription": "ImageToASCII3D converts images into color ASCII art and can use depth maps to create exportable Three.js parallax assets."
+  }
+}

@@ -12,271 +12,285 @@
 <body>
   <div id="app">
     <div class="scale-stage">
-      <main class="app-shell">
-        <aside class="sidebar">
-          <div class="brand">
-            <div class="brand-mark">A3</div>
+      <main class="app-shell theme-forpublic">
+        <header class="topbar">
+          <div class="brand-lockup">
+            <div class="brand-icon">A3</div>
             <div>
               <h1>ImageToASCII3D</h1>
-              <p>Color ASCII with depth-map parallax</p>
+              <p>Color ASCII, depth maps, and exportable 3D parallax assets</p>
             </div>
           </div>
 
-          <section class="panel">
-            <div class="panel-title">Conversion</div>
-
-            <label class="field" for="fit-mode">
-              <span>Sizing</span>
-              <select id="fit-mode">
-                <option value="fit">Fit aspect</option>
-                <option value="stretch" selected>Stretch fill</option>
-                <option value="manual">Manual columns</option>
-              </select>
-            </label>
-
-            <label class="range-field" id="font-size-group" for="font-size">
-              <span>Font Size <strong id="font-size-value">12px</strong></span>
-              <input type="range" id="font-size" min="6" max="24" value="12">
-            </label>
-
-            <label class="range-field" id="cols-group" style="display: none;" for="cols">
-              <span>Columns <strong id="cols-value">80</strong></span>
-              <input type="range" id="cols" min="20" max="300" value="80">
-            </label>
-
-            <label class="field" for="font-family">
-              <span>Font</span>
-              <select id="font-family">
-                <option value="JetBrains Mono" selected>JetBrains Mono</option>
-                <option value="Fira Code">Fira Code</option>
-                <option value="Source Code Pro">Source Code Pro</option>
-                <option value="Consolas">Consolas</option>
-                <option value="Monaco">Monaco</option>
-                <option value="Courier New">Courier New</option>
-                <option value="Ubuntu Mono">Ubuntu Mono</option>
-                <option value="monospace">System Monospace</option>
-              </select>
-            </label>
-
-            <label class="field" for="preset">
-              <span>Glyph Preset</span>
-              <select id="preset">
-                <option value="extended" selected>Extended</option>
-                <option value="standard">Standard</option>
-                <option value="simple">Simple</option>
-                <option value="detailed">Detailed</option>
-                <option value="block">Block Characters</option>
-                <option value="dots">Dots</option>
-                <option value="geometric">Geometric</option>
-              </select>
-            </label>
-
-            <label class="field" for="dithering">
-              <span>Dithering</span>
-              <select id="dithering">
-                <option value="none" selected>None</option>
-                <option value="floyd-steinberg">Floyd-Steinberg</option>
-                <option value="ordered">Ordered Bayer</option>
-              </select>
-            </label>
-
-            <div class="toggle-grid">
-              <label class="toggle">
-                <input type="checkbox" id="edge-detection">
-                <span>Edges</span>
-              </label>
-              <label class="toggle">
-                <input type="checkbox" id="invert">
-                <span>Invert</span>
-              </label>
-              <label class="toggle wide">
-                <input type="checkbox" id="color-mode" checked>
-                <span>Color Output</span>
-              </label>
-            </div>
-          </section>
-
-          <section class="panel">
-            <div class="panel-title">3D Depth</div>
-
-            <label class="toggle wide">
-              <input type="checkbox" id="parallax-enabled">
-              <span>3D Mode</span>
-            </label>
-
-            <label class="range-field" id="parallax-depth-group" style="display: none;" for="parallax-depth">
-              <span>Depth Strength <strong id="parallax-depth-value">30%</strong></span>
-              <input type="range" id="parallax-depth" min="0" max="100" value="30">
-            </label>
-
-            <label class="range-field" id="depth-smoothing-group" style="display: none;" for="depth-smoothing">
-              <span>Depth Smoothing <strong id="depth-smoothing-value">10</strong></span>
-              <input type="range" id="depth-smoothing" min="0" max="20" value="10">
-            </label>
-
-            <label class="range-field" id="parallax-tilt-group" style="display: none;" for="parallax-tilt">
-              <span>Tilt Angle <strong id="parallax-tilt-value">15 deg</strong></span>
-              <input type="range" id="parallax-tilt" min="5" max="45" value="15">
-            </label>
-
-            <label class="toggle wide" id="parallax-invert-group" style="display: none;">
-              <input type="checkbox" id="parallax-invert">
-              <span>Invert Depth</span>
-            </label>
-
-            <label class="range-field" id="parallax-zoom-group" style="display: none;" for="parallax-zoom">
-              <span>Zoom <strong id="parallax-zoom-value">100%</strong></span>
-              <input type="range" id="parallax-zoom" min="50" max="300" value="100">
-            </label>
-          </section>
-
-          <section class="panel">
-            <div class="panel-title">3D FX</div>
-
-            <label class="range-field" id="bloom-intensity-group" style="display: none;" for="bloom-intensity">
-              <span>Bloom <strong id="bloom-intensity-value">0%</strong></span>
-              <input type="range" id="bloom-intensity" min="0" max="300" value="0">
-            </label>
-
-            <label class="range-field" id="bloom-threshold-group" style="display: none;" for="bloom-threshold">
-              <span>Bloom Threshold <strong id="bloom-threshold-value">50%</strong></span>
-              <input type="range" id="bloom-threshold" min="0" max="100" value="50">
-            </label>
-
-            <label class="range-field" id="bloom-radius-group" style="display: none;" for="bloom-radius">
-              <span>Bloom Radius <strong id="bloom-radius-value">50%</strong></span>
-              <input type="range" id="bloom-radius" min="0" max="100" value="50">
-            </label>
-
-            <label class="range-field" id="saturation-group" style="display: none;" for="saturation">
-              <span>Saturation <strong id="saturation-value">100%</strong></span>
-              <input type="range" id="saturation" min="0" max="200" value="100">
-            </label>
-
-            <div class="option-group-divider" id="fx-divider" style="display: none;"></div>
-
-            <label class="range-field" id="chromatic-group" style="display: none;" for="chromatic">
-              <span>RGB Split <strong id="chromatic-value">0%</strong></span>
-              <input type="range" id="chromatic" min="0" max="200" value="0">
-            </label>
-
-            <label class="range-field" id="scanlines-group" style="display: none;" for="scanlines">
-              <span>Scanlines <strong id="scanlines-value">0%</strong></span>
-              <input type="range" id="scanlines" min="0" max="100" value="0">
-            </label>
-
-            <label class="range-field" id="noise-group" style="display: none;" for="noise">
-              <span>Film Grain <strong id="noise-value">0%</strong></span>
-              <input type="range" id="noise" min="0" max="100" value="0">
-            </label>
-
-            <label class="range-field" id="color-pulse-group" style="display: none;" for="color-pulse">
-              <span>Color Pulse <strong id="color-pulse-value">0%</strong></span>
-              <input type="range" id="color-pulse" min="0" max="100" value="0">
-            </label>
-
-            <label class="range-field" id="wave-group" style="display: none;" for="wave">
-              <span>Wave Distort <strong id="wave-value">0%</strong></span>
-              <input type="range" id="wave" min="0" max="100" value="0">
-            </label>
-
-            <label class="range-field" id="flicker-group" style="display: none;" for="flicker">
-              <span>Flicker <strong id="flicker-value">0%</strong></span>
-              <input type="range" id="flicker" min="0" max="100" value="0">
-            </label>
-
-            <div class="option-group-divider" id="game-fx-divider" style="display: none;"></div>
-
-            <div class="field" id="game-fx-group" style="display: none;">
-              <span>Game FX</span>
-              <div class="button-row">
-                <button type="button" id="hit-btn" class="secondary mini-button">Hit</button>
-                <button type="button" id="death-btn" class="secondary mini-button">Death</button>
-                <button type="button" id="reset-btn" class="secondary mini-button">Reset</button>
-              </div>
-            </div>
-          </section>
-        </aside>
-
-        <section class="workspace">
-          <header class="topbar">
-            <div>
-              <p class="eyebrow">Browser-native ASCII depth studio</p>
-              <h2>Convert images into 2D or 3D ASCII assets</h2>
-            </div>
-            <div class="actions">
-              <button id="convert-btn" class="primary" disabled>Convert</button>
-              <button id="export-png-btn" class="secondary" disabled>PNG</button>
-              <button id="export-html-btn" class="secondary" disabled>HTML</button>
-              <button id="copy-text-btn" class="secondary" disabled>Copy Text</button>
-              <button id="export-parallax-btn" class="secondary" disabled>.aparallax</button>
-            </div>
-          </header>
-
-          <div class="stats">
-            <div>
-              <span>Image</span>
-              Source texture
-            </div>
-            <div>
-              <span>Depth</span>
-              Optional map
-            </div>
-            <div>
-              <span>3D</span>
-              Three.js parallax
-            </div>
-            <div>
-              <span>Export</span>
-              PNG, HTML, text, asset
-            </div>
+          <div class="topbar-actions">
+            <button id="export-png-btn" class="secondary-action" type="button" disabled>PNG</button>
+            <button id="export-html-btn" class="secondary-action" type="button" disabled>HTML</button>
+            <button id="copy-text-btn" class="secondary-action" type="button" disabled>Copy Text</button>
+            <button id="export-parallax-btn" class="secondary-action" type="button" disabled>.aparallax</button>
+            <button id="convert-btn" class="primary-action" type="button" disabled>Convert</button>
           </div>
+        </header>
 
-          <div class="media-grid">
-            <section class="upload-area" id="upload-area">
-              <input type="file" id="file-input" accept="image/*" hidden>
-              <div class="upload-prompt">
-                <span class="upload-icon">+</span>
-                <strong>Source Image</strong>
-                <p>Drop or select the image to convert.</p>
+        <main class="workspace">
+          <aside class="tool-panel">
+            <section class="panel-section">
+              <div class="section-title">Conversion</div>
+
+              <label class="field" for="fit-mode">
+                <span>Sizing</span>
+                <select id="fit-mode">
+                  <option value="fit">Fit aspect</option>
+                  <option value="stretch" selected>Stretch fill</option>
+                  <option value="manual">Manual columns</option>
+                </select>
+              </label>
+
+              <label class="range-field" id="font-size-group" for="font-size">
+                <span>Font Size</span>
+                <strong id="font-size-value">12px</strong>
+                <input type="range" id="font-size" min="6" max="24" value="12">
+              </label>
+
+              <label class="range-field" id="cols-group" style="display: none;" for="cols">
+                <span>Columns</span>
+                <strong id="cols-value">80</strong>
+                <input type="range" id="cols" min="20" max="300" value="80">
+              </label>
+
+              <label class="field" for="font-family">
+                <span>Font</span>
+                <select id="font-family">
+                  <option value="JetBrains Mono" selected>JetBrains Mono</option>
+                  <option value="Fira Code">Fira Code</option>
+                  <option value="Source Code Pro">Source Code Pro</option>
+                  <option value="Consolas">Consolas</option>
+                  <option value="Monaco">Monaco</option>
+                  <option value="Courier New">Courier New</option>
+                  <option value="Ubuntu Mono">Ubuntu Mono</option>
+                  <option value="monospace">System Monospace</option>
+                </select>
+              </label>
+
+              <label class="field" for="preset">
+                <span>Glyph Preset</span>
+                <select id="preset">
+                  <option value="extended" selected>Extended</option>
+                  <option value="standard">Standard</option>
+                  <option value="simple">Simple</option>
+                  <option value="detailed">Detailed</option>
+                  <option value="block">Block Characters</option>
+                  <option value="dots">Dots</option>
+                  <option value="geometric">Geometric</option>
+                </select>
+              </label>
+
+              <label class="field" for="dithering">
+                <span>Dithering</span>
+                <select id="dithering">
+                  <option value="none" selected>None</option>
+                  <option value="floyd-steinberg">Floyd-Steinberg</option>
+                  <option value="ordered">Ordered Bayer</option>
+                </select>
+              </label>
+
+              <div class="toggle-grid">
+                <label class="toggle-row">
+                  <input type="checkbox" id="edge-detection">
+                  <span>Edges</span>
+                </label>
+                <label class="toggle-row">
+                  <input type="checkbox" id="invert">
+                  <span>Invert</span>
+                </label>
+                <label class="toggle-row wide">
+                  <input type="checkbox" id="color-mode" checked>
+                  <span>Color Output</span>
+                </label>
               </div>
-              <img id="preview-image" alt="Source preview" hidden>
             </section>
 
-            <section class="upload-area" id="depth-upload-area">
-              <input type="file" id="depth-file-input" accept="image/*" hidden>
-              <div class="upload-prompt">
-                <span class="upload-icon">+</span>
-                <strong>Depth Map</strong>
-                <p>Optional grayscale map for 3D mode.</p>
-              </div>
-              <img id="depth-preview-image" alt="Depth preview" hidden>
+            <section class="panel-section">
+              <div class="section-title">3D Depth</div>
+
+              <label class="toggle-row wide">
+                <input type="checkbox" id="parallax-enabled">
+                <span>3D Mode</span>
+              </label>
+
+              <label class="range-field" id="parallax-depth-group" style="display: none;" for="parallax-depth">
+                <span>Depth Strength</span>
+                <strong id="parallax-depth-value">30%</strong>
+                <input type="range" id="parallax-depth" min="0" max="100" value="30">
+              </label>
+
+              <label class="range-field" id="depth-smoothing-group" style="display: none;" for="depth-smoothing">
+                <span>Depth Smoothing</span>
+                <strong id="depth-smoothing-value">10</strong>
+                <input type="range" id="depth-smoothing" min="0" max="20" value="10">
+              </label>
+
+              <label class="range-field" id="parallax-tilt-group" style="display: none;" for="parallax-tilt">
+                <span>Tilt Angle</span>
+                <strong id="parallax-tilt-value">15 deg</strong>
+                <input type="range" id="parallax-tilt" min="5" max="45" value="15">
+              </label>
+
+              <label class="toggle-row wide" id="parallax-invert-group" style="display: none;">
+                <input type="checkbox" id="parallax-invert">
+                <span>Invert Depth</span>
+              </label>
+
+              <label class="range-field" id="parallax-zoom-group" style="display: none;" for="parallax-zoom">
+                <span>Zoom</span>
+                <strong id="parallax-zoom-value">100%</strong>
+                <input type="range" id="parallax-zoom" min="50" max="300" value="100">
+              </label>
             </section>
 
-            <section class="upload-area" id="parallax-import-area">
-              <input type="file" id="parallax-file-input" accept=".aparallax" hidden>
-              <div class="upload-prompt">
-                <span class="upload-icon">^</span>
-                <strong>Import Asset</strong>
-                <p>Load a saved .aparallax file.</p>
-              </div>
-              <div id="parallax-import-info" class="import-info" hidden></div>
-            </section>
-          </div>
+            <section class="panel-section">
+              <div class="section-title">3D FX</div>
 
-          <section class="output">
-            <div class="output-header">
+              <label class="range-field" id="bloom-intensity-group" style="display: none;" for="bloom-intensity">
+                <span>Bloom</span>
+                <strong id="bloom-intensity-value">0%</strong>
+                <input type="range" id="bloom-intensity" min="0" max="300" value="0">
+              </label>
+
+              <label class="range-field" id="bloom-threshold-group" style="display: none;" for="bloom-threshold">
+                <span>Bloom Threshold</span>
+                <strong id="bloom-threshold-value">50%</strong>
+                <input type="range" id="bloom-threshold" min="0" max="100" value="50">
+              </label>
+
+              <label class="range-field" id="bloom-radius-group" style="display: none;" for="bloom-radius">
+                <span>Bloom Radius</span>
+                <strong id="bloom-radius-value">50%</strong>
+                <input type="range" id="bloom-radius" min="0" max="100" value="50">
+              </label>
+
+              <label class="range-field" id="saturation-group" style="display: none;" for="saturation">
+                <span>Saturation</span>
+                <strong id="saturation-value">100%</strong>
+                <input type="range" id="saturation" min="0" max="200" value="100">
+              </label>
+
+              <div class="option-group-divider" id="fx-divider" style="display: none;"></div>
+
+              <label class="range-field" id="chromatic-group" style="display: none;" for="chromatic">
+                <span>RGB Split</span>
+                <strong id="chromatic-value">0%</strong>
+                <input type="range" id="chromatic" min="0" max="200" value="0">
+              </label>
+
+              <label class="range-field" id="scanlines-group" style="display: none;" for="scanlines">
+                <span>Scanlines</span>
+                <strong id="scanlines-value">0%</strong>
+                <input type="range" id="scanlines" min="0" max="100" value="0">
+              </label>
+
+              <label class="range-field" id="noise-group" style="display: none;" for="noise">
+                <span>Film Grain</span>
+                <strong id="noise-value">0%</strong>
+                <input type="range" id="noise" min="0" max="100" value="0">
+              </label>
+
+              <label class="range-field" id="color-pulse-group" style="display: none;" for="color-pulse">
+                <span>Color Pulse</span>
+                <strong id="color-pulse-value">0%</strong>
+                <input type="range" id="color-pulse" min="0" max="100" value="0">
+              </label>
+
+              <label class="range-field" id="wave-group" style="display: none;" for="wave">
+                <span>Wave Distort</span>
+                <strong id="wave-value">0%</strong>
+                <input type="range" id="wave" min="0" max="100" value="0">
+              </label>
+
+              <label class="range-field" id="flicker-group" style="display: none;" for="flicker">
+                <span>Flicker</span>
+                <strong id="flicker-value">0%</strong>
+                <input type="range" id="flicker" min="0" max="100" value="0">
+              </label>
+
+              <div class="option-group-divider" id="game-fx-divider" style="display: none;"></div>
+
+              <div class="field" id="game-fx-group" style="display: none;">
+                <span>Game FX</span>
+                <div class="button-row">
+                  <button type="button" id="hit-btn" class="secondary-action compact">Hit</button>
+                  <button type="button" id="death-btn" class="secondary-action compact">Death</button>
+                  <button type="button" id="reset-btn" class="secondary-action compact">Reset</button>
+                </div>
+              </div>
+            </section>
+          </aside>
+
+          <section class="main-surface">
+            <div class="stats-row">
               <div>
-                <p class="eyebrow">Output</p>
-                <h3>ASCII Preview</h3>
+                <span>Source</span>
+                image texture
               </div>
-              <span id="output-info"></span>
+              <div>
+                <span>Depth</span>
+                optional map
+              </div>
+              <div>
+                <span>3D</span>
+                parallax preview
+              </div>
+              <div>
+                <span>Export</span>
+                png html text asset
+              </div>
             </div>
-            <div id="ascii-output" class="ascii-container">
-              <div class="empty-state">Load an image, tune settings, then convert.</div>
-            </div>
+
+            <section class="source-grid">
+              <section class="upload-area" id="upload-area">
+                <input type="file" id="file-input" accept="image/*" hidden>
+                <div class="upload-prompt">
+                  <span class="upload-icon">+</span>
+                  <strong>Source Image</strong>
+                  <p>Drop or browse an image.</p>
+                </div>
+                <img id="preview-image" alt="Source preview" hidden>
+              </section>
+
+              <section class="upload-area" id="depth-upload-area">
+                <input type="file" id="depth-file-input" accept="image/*" hidden>
+                <div class="upload-prompt">
+                  <span class="upload-icon">+</span>
+                  <strong>Depth Map</strong>
+                  <p>Optional grayscale 3D map.</p>
+                </div>
+                <img id="depth-preview-image" alt="Depth preview" hidden>
+              </section>
+
+              <section class="upload-area" id="parallax-import-area">
+                <input type="file" id="parallax-file-input" accept=".aparallax" hidden>
+                <div class="upload-prompt">
+                  <span class="upload-icon">^</span>
+                  <strong>Import Asset</strong>
+                  <p>Load a saved .aparallax file.</p>
+                </div>
+                <div id="parallax-import-info" class="import-info" hidden></div>
+              </section>
+            </section>
+
+            <section class="output">
+              <div class="output-header">
+                <div>
+                  <p class="eyebrow">Output</p>
+                  <h2>ASCII Preview</h2>
+                </div>
+                <span id="output-info"></span>
+              </div>
+              <div id="ascii-output" class="ascii-container">
+                <div class="empty-state">Load an image, tune settings, then convert.</div>
+              </div>
+            </section>
           </section>
-        </section>
+        </main>
       </main>
     </div>
 
