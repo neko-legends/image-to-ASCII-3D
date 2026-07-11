@@ -80,6 +80,15 @@ const uploadArea = document.getElementById('upload-area')!;
 const fileInput = document.getElementById('file-input') as HTMLInputElement;
 const previewImage = document.getElementById('preview-image') as HTMLImageElement;
 
+const IMAGE_EXTENSIONS = new Set([
+  'avif', 'bmp', 'gif', 'ico', 'jfif', 'jpeg', 'jpg', 'png', 'svg', 'webp',
+]);
+const IMAGE_MIME_TYPES = new Set([
+  'image/avif', 'image/bmp', 'image/gif', 'image/jpeg', 'image/png', 'image/svg+xml',
+  'image/vnd.microsoft.icon', 'image/webp', 'image/x-icon',
+]);
+const SUPPORTED_IMAGE_FORMATS = 'PNG, JPEG, GIF, WebP, AVIF, BMP, SVG, or ICO';
+
 // DOM Elements - Depth map upload
 const depthUploadArea = document.getElementById('depth-upload-area')!;
 const depthFileInput = document.getElementById('depth-file-input') as HTMLInputElement;
@@ -243,6 +252,10 @@ function debounce<T extends (...args: unknown[]) => void>(fn: T, ms: number): T 
 }
 
 function setupEventListeners(): void {
+  // Prevent a file dropped outside an upload target from replacing the app page.
+  document.addEventListener('dragover', preventDocumentFileDrop);
+  document.addEventListener('drop', preventDocumentFileDrop);
+
   // File upload - main image
   uploadArea.addEventListener('click', () => fileInput.click());
   fileInput.addEventListener('change', handleFileSelect);
@@ -783,18 +796,17 @@ function handleDragLeave(e: DragEvent): void {
 function handleDrop(e: DragEvent): void {
   e.preventDefault();
   uploadArea.classList.remove('dragover');
-  
-  const files = e.dataTransfer?.files;
-  if (files && files.length > 0) {
-    loadImageFile(files[0]);
-  }
+
+  const file = getFirstDroppedFile(e);
+  if (file) void loadImageFile(file);
 }
 
 function handleFileSelect(e: Event): void {
   const input = e.target as HTMLInputElement;
   if (input.files && input.files.length > 0) {
-    loadImageFile(input.files[0]);
+    void loadImageFile(input.files[0]);
   }
+  input.value = '';
 }
 
 // Depth map handlers
@@ -811,23 +823,22 @@ function handleDepthDragLeave(e: DragEvent): void {
 function handleDepthDrop(e: DragEvent): void {
   e.preventDefault();
   depthUploadArea.classList.remove('dragover');
-  
-  const files = e.dataTransfer?.files;
-  if (files && files.length > 0) {
-    loadDepthMapFile(files[0]);
-  }
+
+  const file = getFirstDroppedFile(e);
+  if (file) void loadDepthMapFile(file);
 }
 
 function handleDepthFileSelect(e: Event): void {
   const input = e.target as HTMLInputElement;
   if (input.files && input.files.length > 0) {
-    loadDepthMapFile(input.files[0]);
+    void loadDepthMapFile(input.files[0]);
   }
+  input.value = '';
 }
 
 async function loadDepthMapFile(file: File): Promise<void> {
-  if (!file.type.startsWith('image/')) {
-    alert('Please select an image file for the depth map');
+  if (!isSupportedImageFile(file)) {
+    alert(`Please select a supported depth-map image: ${SUPPORTED_IMAGE_FORMATS}.`);
     return;
   }
   
@@ -851,13 +862,13 @@ async function loadDepthMapFile(file: File): Promise<void> {
     
   } catch (err) {
     console.error('Failed to load depth map:', err);
-    alert('Failed to load depth map');
+    alert(`Could not decode this depth-map image. Try ${SUPPORTED_IMAGE_FORMATS}.`);
   }
 }
 
 async function loadImageFile(file: File): Promise<void> {
-  if (!file.type.startsWith('image/')) {
-    alert('Please select an image file');
+  if (!isSupportedImageFile(file)) {
+    alert(`Please select a supported image: ${SUPPORTED_IMAGE_FORMATS}.`);
     return;
   }
   
@@ -882,8 +893,27 @@ async function loadImageFile(file: File): Promise<void> {
     
   } catch (err) {
     console.error('Failed to load image:', err);
-    alert('Failed to load image');
+    alert(`Could not decode this image. Try ${SUPPORTED_IMAGE_FORMATS}.`);
   }
+}
+
+function preventDocumentFileDrop(e: DragEvent): void {
+  if (hasDroppedFiles(e)) e.preventDefault();
+}
+
+function getFirstDroppedFile(e: DragEvent): File | null {
+  return e.dataTransfer?.files.item(0) ?? null;
+}
+
+function hasDroppedFiles(e: DragEvent): boolean {
+  return Array.from(e.dataTransfer?.types ?? []).includes('Files');
+}
+
+function isSupportedImageFile(file: File): boolean {
+  if (IMAGE_MIME_TYPES.has(file.type.toLowerCase())) return true;
+
+  const extension = file.name.split('.').pop()?.toLowerCase();
+  return extension !== undefined && IMAGE_EXTENSIONS.has(extension);
 }
 
 /**

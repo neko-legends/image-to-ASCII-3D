@@ -1,11 +1,6 @@
 import { defineConfig } from 'vite';
 
-// Port can be overridden via PORT env (set by Agent Studio launcher)
-// Default aligns with the Tauri desktop dev URL.
-const port = parseInt(process.env.PORT || '1440', 10);
-
-// Don't auto-open browser when launched from Agent Studio (it handles that)
-const openBrowser = process.env.LAUNCHED_FROM_STUDIO !== 'true';
+const port = 1442;
 
 export default defineConfig({
   root: '.',
@@ -16,10 +11,12 @@ export default defineConfig({
   server: {
     host: '127.0.0.1',
     port,
-    open: openBrowser,
+    strictPort: true,
+    open: false,
   },
   preview: {
     host: '127.0.0.1',
-    port,
+    port: 1443,
+    strictPort: true,
   },
 });

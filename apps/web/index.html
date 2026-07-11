@@ -15,7 +15,6 @@
       <main class="app-shell theme-forpublic">
         <header class="topbar">
           <div class="brand-lockup">
-            <div class="brand-icon">A3</div>
             <div>
               <h1>ImageToASCII3D</h1>
               <p>Color ASCII, depth maps, and exportable 3D parallax assets</p>
@@ -247,21 +246,21 @@
 
             <section class="source-grid">
               <section class="upload-area" id="upload-area">
-                <input type="file" id="file-input" accept="image/*" hidden>
+                <input type="file" id="file-input" accept=".avif,.bmp,.gif,.ico,.jfif,.jpg,.jpeg,.png,.svg,.webp" hidden>
                 <div class="upload-prompt">
                   <span class="upload-icon">+</span>
                   <strong>Source Image</strong>
-                  <p>Drop or browse an image.</p>
+                  <p>Drop or browse PNG, JPEG, GIF, WebP, AVIF, BMP, SVG, or ICO.</p>
                 </div>
                 <img id="preview-image" alt="Source preview" hidden>
               </section>
 
               <section class="upload-area" id="depth-upload-area">
-                <input type="file" id="depth-file-input" accept="image/*" hidden>
+                <input type="file" id="depth-file-input" accept=".avif,.bmp,.gif,.ico,.jfif,.jpg,.jpeg,.png,.svg,.webp" hidden>
                 <div class="upload-prompt">
                   <span class="upload-icon">+</span>
                   <strong>Depth Map</strong>
-                  <p>Optional grayscale 3D map.</p>
+                  <p>Drop an optional grayscale image for 3D depth.</p>
                 </div>
                 <img id="depth-preview-image" alt="Depth preview" hidden>
               </section>

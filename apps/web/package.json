@@ -1,13 +1,13 @@
 {
   "name": "@ascii/web",
-  "version": "0.1.0",
+  "version": "26.7.11",
   "private": true,
   "description": "ImageToASCII3D web app",
   "type": "module",
   "scripts": {
-    "dev": "vite --host 127.0.0.1 --port 1440",
+    "dev": "vite --host 127.0.0.1 --port 1442",
     "build": "tsc && vite build",
-    "preview": "vite preview --host 127.0.0.1 --port 1441"
+    "preview": "vite preview --host 127.0.0.1 --port 1443"
   },
   "dependencies": {
     "@ascii/core": "file:../../packages/core",

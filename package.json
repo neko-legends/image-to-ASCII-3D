@@ -1,6 +1,6 @@
 {
   "name": "image-to-ascii-3d",
-  "version": "0.1.0",
+  "version": "26.7.11",
   "private": true,
   "license": "MIT",
   "description": "Public web app for color image-to-ASCII conversion with optional depth-map driven Three.js parallax.",
@@ -10,7 +10,8 @@
     "apps/*"
   ],
   "scripts": {
-    "dev": "npm run build:packages && npm run dev --workspace @ascii/web",
+    "dev": "npm run tauri:dev",
+    "dev:web": "npm run build:packages && npm run dev --workspace @ascii/web",
     "build": "npm run build:packages && npm run build --workspace @ascii/web",
     "build:packages": "npm run build --workspace @ascii/core && npm run build --workspace @ascii/parallax-reader",
     "preview": "npm run preview --workspace @ascii/web",

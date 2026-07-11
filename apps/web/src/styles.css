@@ -109,24 +109,6 @@ p {
   flex: 1 1 auto;
 }
 
-.brand-icon {
-  display: grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  flex: 0 0 auto;
-  border: 1px solid color-mix(in srgb, var(--accent) 72%, #2b1003);
-  border-radius: 8px;
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--accent-2) 34%, transparent), transparent),
-    #180903;
-  color: var(--accent-2);
-  font-size: 17px;
-  font-weight: 950;
-  text-shadow: 0 0 10px rgb(255 176 0 / 0.58);
-  box-shadow: inset 0 0 18px rgb(255 106 0 / 0.18), 0 0 14px rgb(255 106 0 / 0.22);
-}
-
 .topbar h1,
 .output-header h2 {
   overflow: hidden;
