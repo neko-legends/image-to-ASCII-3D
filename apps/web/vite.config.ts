@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 
-const port = 1442;
+const port = 1470;
 
 export default defineConfig({
   root: '.',
@@ -16,7 +16,7 @@ export default defineConfig({
   },
   preview: {
     host: '127.0.0.1',
-    port: 1443,
+    port: 1471,
     strictPort: true,
   },
 });

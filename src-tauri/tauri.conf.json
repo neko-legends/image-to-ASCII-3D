@@ -5,7 +5,7 @@
   "identifier": "public.image.to.ascii3d",
   "build": {
     "beforeDevCommand": "npm run dev:web",
-    "devUrl": "http://127.0.0.1:1442",
+    "devUrl": "http://127.0.0.1:1470",
     "beforeBuildCommand": "npm run build",
     "frontendDist": "../apps/web/dist"
   },

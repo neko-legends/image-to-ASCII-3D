@@ -54,8 +54,8 @@ The same UI can still run as a plain Vite web app for browser-only testing or de
 npm run dev:web
 ```
 
-The web dev server defaults to `http://127.0.0.1:1442/`.
-The web preview server defaults to `http://127.0.0.1:1443/`.
+The web dev server defaults to `http://127.0.0.1:1470/`.
+The web preview server defaults to `http://127.0.0.1:1471/`.
 
 ## AI Agent Instructions
 
@@ -65,7 +65,7 @@ The web preview server defaults to `http://127.0.0.1:1443/`.
 - Keep the browser app in `apps/web` and the reusable conversion/parallax code in `packages/core` and `packages/parallax-reader`.
 - Preserve the core export surface: PNG, HTML, plain text copy, `.aparallax` export, and `.aparallax` import.
 - Preserve the optional depth-map path for 3D mode; the app should still work as a 2D ASCII converter when no depth map is loaded.
-- `npm run dev` is the desktop Tauri app. `npm run dev:web` is the explicit browser-only development server on `http://127.0.0.1:1442/`; it does not open a browser automatically.
+- `npm run dev` is the desktop Tauri app. `npm run dev:web` is the explicit browser-only development server on `http://127.0.0.1:1470/`; it does not open a browser automatically.
 - Prefer focused changes over broad rewrites. The conversion engine has tests, so extend tests when changing glyph mapping, resizing, dithering, luminance, or frame output behavior.
 
 ## Project Layout

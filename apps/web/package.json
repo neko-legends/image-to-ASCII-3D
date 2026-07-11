@@ -5,9 +5,9 @@
   "description": "ImageToASCII3D web app",
   "type": "module",
   "scripts": {
-    "dev": "vite --host 127.0.0.1 --port 1442",
+    "dev": "vite --host 127.0.0.1 --port 1470",
     "build": "tsc && vite build",
-    "preview": "vite preview --host 127.0.0.1 --port 1443"
+    "preview": "vite preview --host 127.0.0.1 --port 1471"
   },
   "dependencies": {
     "@ascii/core": "file:../../packages/core",
