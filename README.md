@@ -8,6 +8,8 @@
 
 ![ImageToASCII3D converting an image with a depth map and 3D parallax](docs/images/image-to-ascii-3d.png)
 
+![Animated ImageToASCII3D conversion and 3D parallax preview](assets/imageToASCII3D_2x.gif)
+
 ImageToASCII3D is a Windows desktop tool for producing stylized ASCII art from ordinary images. It can work as a fast 2D converter or combine a source image with a depth map to create an interactive Three.js parallax scene. Once you convert an image, control changes update the result in real time.
 
 ## Highlights
