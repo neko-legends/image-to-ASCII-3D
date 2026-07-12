@@ -12,6 +12,8 @@ import {
   type GlyphPresetName,
   type AsciiFrame,
 } from '@ascii/core';
+import { invoke } from '@tauri-apps/api/core';
+import { getCurrentWindow } from '@tauri-apps/api/window';
 
 import { getCalibratedGlyphMap } from './calibrate.js';
 import { renderToHtml, renderToCanvas, downloadCanvasAsPng, downloadAsHtml } from './render.js';
@@ -88,6 +90,9 @@ const IMAGE_MIME_TYPES = new Set([
   'image/vnd.microsoft.icon', 'image/webp', 'image/x-icon',
 ]);
 const SUPPORTED_IMAGE_FORMATS = 'PNG, JPEG, GIF, WebP, AVIF, BMP, SVG, or ICO';
+
+type NativeDropTarget = 'source' | 'depth' | 'parallax';
+type DropPosition = { x: number; y: number };
 
 // DOM Elements - Depth map upload
 const depthUploadArea = document.getElementById('depth-upload-area')!;
@@ -186,6 +191,7 @@ const outputInfo = document.getElementById('output-info')!;
 function init(): void {
   updateScale();
   setupEventListeners();
+  void setupTauriDragAndDrop();
   loadSettings();
   updateFitModeUI();
   updateParallaxUI();
@@ -415,6 +421,88 @@ function setupEventListeners(): void {
   updateColorPulseDisplay();
   updateWaveDisplay();
   updateFlickerDisplay();
+}
+
+async function setupTauriDragAndDrop(): Promise<void> {
+  if (!('__TAURI_INTERNALS__' in window)) return;
+
+  try {
+    const appWindow = getCurrentWindow();
+    let scaleFactor = await appWindow.scaleFactor();
+
+    await appWindow.onScaleChanged(({ payload }) => {
+      scaleFactor = payload.scaleFactor;
+    });
+
+    await appWindow.onDragDropEvent(({ payload }) => {
+      if (payload.type === 'leave') {
+        setNativeDropHighlight(null);
+        return;
+      }
+
+      const target = nativeDropTargetAt(payload.position, scaleFactor);
+      if (payload.type === 'enter' || payload.type === 'over') {
+        setNativeDropHighlight(target);
+        return;
+      }
+
+      setNativeDropHighlight(null);
+      const path = payload.paths[0];
+      if (target && path) void loadNativeDroppedPath(path, target);
+    });
+  } catch (error) {
+    console.error('Failed to initialize native drag and drop:', error);
+  }
+}
+
+function nativeDropTargetAt(position: DropPosition, scaleFactor: number): NativeDropTarget | null {
+  const x = position.x / scaleFactor;
+  const y = position.y / scaleFactor;
+  const element = document.elementFromPoint(x, y);
+
+  if (element?.closest('#upload-area')) return 'source';
+  if (element?.closest('#depth-upload-area')) return 'depth';
+  if (element?.closest('#parallax-import-area')) return 'parallax';
+  return null;
+}
+
+function setNativeDropHighlight(target: NativeDropTarget | null): void {
+  uploadArea.classList.toggle('dragover', target === 'source');
+  depthUploadArea.classList.toggle('dragover', target === 'depth');
+  parallaxImportArea.classList.toggle('dragover', target === 'parallax');
+}
+
+async function loadNativeDroppedPath(path: string, target: NativeDropTarget): Promise<void> {
+  try {
+    const response = await invoke<ArrayBuffer | Uint8Array | number[]>('read_dropped_file', { path });
+    const bytes = response instanceof ArrayBuffer ? response : new Uint8Array(response);
+    const name = path.split(/[\\/]/).pop() || 'dropped-file';
+    const file = new File([bytes], name, { type: mimeTypeForFileName(name) });
+
+    if (target === 'source') await loadImageFile(file);
+    else if (target === 'depth') await loadDepthMapFile(file);
+    else await loadParallaxFile(file);
+  } catch (error) {
+    console.error('Failed to load dropped file:', error);
+    alert(`Could not load the dropped file: ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
+
+function mimeTypeForFileName(name: string): string {
+  const extension = name.split('.').pop()?.toLowerCase();
+  const mimeTypes: Record<string, string> = {
+    avif: 'image/avif',
+    bmp: 'image/bmp',
+    gif: 'image/gif',
+    ico: 'image/x-icon',
+    jfif: 'image/jpeg',
+    jpeg: 'image/jpeg',
+    jpg: 'image/jpeg',
+    png: 'image/png',
+    svg: 'image/svg+xml',
+    webp: 'image/webp',
+  };
+  return extension ? mimeTypes[extension] ?? 'application/octet-stream' : 'application/octet-stream';
 }
 
 type SavedSettings = {

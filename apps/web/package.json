@@ -1,6 +1,6 @@
 {
   "name": "@ascii/web",
-  "version": "26.7.11",
+  "version": "26.7.12",
   "private": true,
   "description": "ImageToASCII3D web app",
   "type": "module",

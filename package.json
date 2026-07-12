@@ -1,6 +1,6 @@
 {
   "name": "image-to-ascii-3d",
-  "version": "26.7.11",
+  "version": "26.7.12",
   "private": true,
   "license": "MIT",
   "description": "Public web app for color image-to-ASCII conversion with optional depth-map driven Three.js parallax.",
