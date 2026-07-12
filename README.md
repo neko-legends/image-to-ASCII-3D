@@ -31,20 +31,13 @@ Release builds load the bundled frontend directly from the executable; they do n
 
 ```powershell
 npm install
-npm run tauri:build
+npm run build:portable
 ```
 
-For a quick test build without installer packaging:
-
-```powershell
-npm run build
-.\node_modules\.bin\tauri.cmd build --no-bundle
-```
-
-The direct executable is written to:
+The stable portable executable is always written without a version number:
 
 ```text
-src-tauri/target/release/image-to-ascii-3d.exe
+release/portable/image-to-ascii-3d.exe
 ```
 
 ## Optional Web Mode
