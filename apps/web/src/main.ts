@@ -90,6 +90,7 @@ const IMAGE_MIME_TYPES = new Set([
   'image/vnd.microsoft.icon', 'image/webp', 'image/x-icon',
 ]);
 const SUPPORTED_IMAGE_FORMATS = 'PNG, JPEG, GIF, WebP, AVIF, BMP, SVG, or ICO';
+const PARALLAX_WHEEL_ZOOM_STEP = 10;
 
 type NativeDropTarget = 'source' | 'depth' | 'parallax';
 type DropPosition = { x: number; y: number };
@@ -322,6 +323,7 @@ function setupEventListeners(): void {
     applyParallaxZoom();
     saveSettings();
   });
+  outputContainer.addEventListener('wheel', handleParallaxZoomWheel, { passive: false });
   
   // Bloom controls
   bloomIntensityInput.addEventListener('input', () => {
@@ -750,6 +752,23 @@ function applyParallaxZoom(): void {
   if (isParallaxActive()) {
     setParallaxZoom(parseInt(parallaxZoomInput.value, 10));
   }
+}
+
+function handleParallaxZoomWheel(event: WheelEvent): void {
+  if (!isParallaxActive() || event.deltaY === 0) return;
+
+  event.preventDefault();
+  const minimum = parseInt(parallaxZoomInput.min, 10);
+  const maximum = parseInt(parallaxZoomInput.max, 10);
+  const current = parseInt(parallaxZoomInput.value, 10);
+  const direction = event.deltaY < 0 ? 1 : -1;
+  const next = Math.max(minimum, Math.min(maximum, current + direction * PARALLAX_WHEEL_ZOOM_STEP));
+  if (next === current) return;
+
+  parallaxZoomInput.value = String(next);
+  updateParallaxZoomDisplay();
+  applyParallaxZoom();
+  saveSettings();
 }
 
 function applyBloomSettings(): void {

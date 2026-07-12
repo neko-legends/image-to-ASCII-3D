@@ -1,6 +1,6 @@
 {
   "name": "@ascii/parallax-reader",
-  "version": "26.7.12",
+  "version": "26.7.13",
   "description": "Standalone Three.js parallax asset loader - no source images required",
   "type": "module",
   "main": "./dist/index.js",

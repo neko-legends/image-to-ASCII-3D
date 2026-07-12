@@ -1460,7 +1460,7 @@ dependencies = [
 
 [[package]]
 name = "image-to-ascii-3d"
-version = "26.7.12"
+version = "26.7.13"
 dependencies = [
  "tauri",
  "tauri-build",

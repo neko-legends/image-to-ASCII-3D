@@ -8,6 +8,7 @@ ImageToASCII3D is a standalone desktop image-to-ASCII tool with optional depth-m
 
 - Color or monochrome ASCII conversion
 - Optional reference depth map for interactive 3D parallax
+- Slider or mouse-wheel zoom over the 3D preview
 - Fit, stretch, and manual grid sizing
 - Font, glyph, dithering, edge detection, and invert controls
 - Bloom, saturation, RGB split, scanline, grain, pulse, wave, and flicker controls in 3D mode
