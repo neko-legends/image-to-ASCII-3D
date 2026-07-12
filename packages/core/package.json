@@ -1,6 +1,6 @@
 {
   "name": "@ascii/core",
-  "version": "26.7.13",
+  "version": "26.7.14",
   "description": "Pure TypeScript ASCII conversion engine - no DOM dependencies",
   "type": "module",
   "main": "./dist/index.js",
