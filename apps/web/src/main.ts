@@ -53,6 +53,8 @@ import {
 let currentImage: RGBAImage | null = null;
 let currentDepthMap: RGBAImage | null = null;
 let currentFrame: AsciiFrame | null = null;
+let hasConverted = false;
+let autoConvertTimer: ReturnType<typeof setTimeout> | null = null;
 
 // LocalStorage keys
 const STORAGE_KEY = 'ascii-generator-last-image';
@@ -266,6 +268,21 @@ function debounce<T extends (...args: unknown[]) => void>(fn: T, ms: number): T 
   }) as T;
 }
 
+function scheduleAutoConvert(): void {
+  if (!hasConverted || !currentImage) return;
+
+  if (autoConvertTimer) clearTimeout(autoConvertTimer);
+  autoConvertTimer = setTimeout(() => {
+    autoConvertTimer = null;
+    void handleConvert();
+  }, 120);
+}
+
+function saveSettingsAndAutoConvert(): void {
+  saveSettings();
+  scheduleAutoConvert();
+}
+
 function setupEventListeners(): void {
   // Prevent a file dropped outside an upload target from replacing the app page.
   document.addEventListener('dragover', preventDocumentFileDrop);
@@ -288,43 +305,43 @@ function setupEventListeners(): void {
   // Options
   fitModeSelect.addEventListener('change', () => {
     updateFitModeUI();
-    saveSettings();
+    saveSettingsAndAutoConvert();
   });
   fontFamilySelect.addEventListener('change', () => {
     updateCharAspect();
-    saveSettings();
+    saveSettingsAndAutoConvert();
   });
   fontSizeInput.addEventListener('input', () => {
     updateFontSizeDisplay();
-    saveSettings();
+    saveSettingsAndAutoConvert();
   });
   colsInput.addEventListener('input', () => {
     updateColsDisplay();
-    saveSettings();
+    saveSettingsAndAutoConvert();
   });
-  presetSelect.addEventListener('change', saveSettings);
-  ditheringSelect.addEventListener('change', saveSettings);
-  edgeCheckbox.addEventListener('change', saveSettings);
-  invertCheckbox.addEventListener('change', saveSettings);
-  colorCheckbox.addEventListener('change', saveSettings);
+  presetSelect.addEventListener('change', saveSettingsAndAutoConvert);
+  ditheringSelect.addEventListener('change', saveSettingsAndAutoConvert);
+  edgeCheckbox.addEventListener('change', saveSettingsAndAutoConvert);
+  invertCheckbox.addEventListener('change', saveSettingsAndAutoConvert);
+  colorCheckbox.addEventListener('change', saveSettingsAndAutoConvert);
   
   // Parallax options
   parallaxEnabledCheckbox.addEventListener('change', () => {
     updateParallaxUI();
-    saveSettings();
+    saveSettingsAndAutoConvert();
   });
   parallaxDepthInput.addEventListener('input', () => {
     updateParallaxDepthDisplay();
-    saveSettings();
+    saveSettingsAndAutoConvert();
   });
   parallaxTiltInput.addEventListener('input', () => {
     updateParallaxTiltDisplay();
-    saveSettings();
+    saveSettingsAndAutoConvert();
   });
-  parallaxInvertCheckbox.addEventListener('change', saveSettings);
+  parallaxInvertCheckbox.addEventListener('change', saveSettingsAndAutoConvert);
   depthSmoothingInput.addEventListener('input', () => {
     updateDepthSmoothingDisplay();
-    saveSettings();
+    saveSettingsAndAutoConvert();
   });
   parallaxZoomInput.addEventListener('input', () => {
     updateParallaxZoomDisplay();
@@ -937,6 +954,7 @@ async function loadDepthMapFile(file: File): Promise<void> {
     
     // Extract RGBA data
     currentDepthMap = imageToRGBA(img);
+    scheduleAutoConvert();
     
     // Save to localStorage for persistence
     saveDepthMapToStorage(img);
@@ -970,6 +988,7 @@ async function loadImageFile(file: File): Promise<void> {
     
     // Enable convert button
     convertBtn.disabled = false;
+    scheduleAutoConvert();
     
     // Save to localStorage for persistence
     saveImageToStorage(img);
@@ -1250,6 +1269,11 @@ function calculateDimensionsForFontSizeWithSize(
 
 async function handleConvert(): Promise<void> {
   if (!currentImage) return;
+
+  if (autoConvertTimer) {
+    clearTimeout(autoConvertTimer);
+    autoConvertTimer = null;
+  }
   
   // Clear container and force layout reflow BEFORE measuring
   // This ensures we get accurate container dimensions
@@ -1412,6 +1436,7 @@ async function handleConvert(): Promise<void> {
     copyTextBtn.disabled = false;
     // Parallax export only available when parallax is active
     exportParallaxBtn.disabled = !useParallax3D;
+    hasConverted = true;
     
   } catch (err) {
     console.error('Conversion failed:', err);
