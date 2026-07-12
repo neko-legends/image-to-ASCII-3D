@@ -1,6 +1,6 @@
 {
   "name": "@ascii/web",
-  "version": "26.7.15",
+  "version": "26.7.16",
   "private": true,
   "description": "ImageToASCII3D web app",
   "type": "module",
@@ -13,6 +13,7 @@
     "@ascii/core": "file:../../packages/core",
     "@ascii/parallax-reader": "file:../../packages/parallax-reader",
     "@tauri-apps/api": "2.11.0",
+    "@tauri-apps/plugin-dialog": "2.7.1",
     "postprocessing": "^6.38.2",
     "three": "^0.182.0"
   },

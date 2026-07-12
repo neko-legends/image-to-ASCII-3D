@@ -1,6 +1,6 @@
 [package]
 name = "image-to-ascii-3d"
-version = "26.7.15"
+version = "26.7.16"
 description = "Color image-to-ASCII converter with optional 3D parallax"
 authors = ["ImageToASCII3D contributors"]
 license = "MIT"
@@ -16,3 +16,4 @@ tauri-build = { version = "2.5.1", features = [] }
 
 [dependencies]
 tauri = { version = "2.11.0", features = [] }
+tauri-plugin-dialog = "2.7.1"

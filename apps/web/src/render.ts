@@ -126,6 +126,15 @@ export function canvasToPngDataUrl(canvas: HTMLCanvasElement): string {
   return canvas.toDataURL('image/png');
 }
 
+export function canvasToPngBlob(canvas: HTMLCanvasElement): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (blob) resolve(blob);
+      else reject(new Error('Failed to encode PNG image.'));
+    }, 'image/png');
+  });
+}
+
 /**
  * Download canvas as PNG file
  */
@@ -156,7 +165,7 @@ export function downloadAsHtml(frame: AsciiFrame, filename: string = 'ascii-art.
 /**
  * Generate a complete HTML document with the ASCII art
  */
-function generateHtmlDocument(frame: AsciiFrame): string {
+export function generateHtmlDocument(frame: AsciiFrame): string {
   const asciiHtml = renderToHtml(frame, true);
   
   return `<!DOCTYPE html>

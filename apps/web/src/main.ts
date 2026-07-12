@@ -13,15 +13,24 @@ import {
   type AsciiFrame,
 } from '@ascii/core';
 import { invoke } from '@tauri-apps/api/core';
+import { save } from '@tauri-apps/plugin-dialog';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 
 import { getCalibratedGlyphMap } from './calibrate.js';
-import { renderToHtml, renderToCanvas, downloadCanvasAsPng, downloadAsHtml } from './render.js';
+import {
+  renderToHtml,
+  renderToCanvas,
+  canvasToPngBlob,
+  generateHtmlDocument,
+  downloadCanvasAsPng,
+  downloadAsHtml,
+} from './render.js';
 import { 
   initParallax3D, 
   destroyParallax3D, 
   isParallaxActive, 
-  downloadParallaxAsset, 
+  downloadParallaxAsset,
+  exportParallaxAsset,
   importParallaxAsset, 
   setParallaxZoom, 
   setBloomIntensity, 
@@ -1410,7 +1419,7 @@ async function handleConvert(): Promise<void> {
   }
 }
 
-function handleExportPng(): void {
+async function handleExportPng(): Promise<void> {
   if (!currentFrame) return;
   
   const canvas = renderToCanvas(currentFrame, {
@@ -1419,12 +1428,32 @@ function handleExportPng(): void {
     colored: colorCheckbox.checked,
   });
   
-  downloadCanvasAsPng(canvas, 'ascii-art.png');
+  if (!isTauriApp()) {
+    downloadCanvasAsPng(canvas, 'ascii-art.png');
+    return;
+  }
+
+  try {
+    const blob = await canvasToPngBlob(canvas);
+    await saveNativeExport('ascii-art.png', 'PNG image', ['png'], new Uint8Array(await blob.arrayBuffer()));
+  } catch (error) {
+    handleExportError('PNG', error);
+  }
 }
 
-function handleExportHtml(): void {
+async function handleExportHtml(): Promise<void> {
   if (!currentFrame) return;
-  downloadAsHtml(currentFrame, 'ascii-art.html');
+  if (!isTauriApp()) {
+    downloadAsHtml(currentFrame, 'ascii-art.html');
+    return;
+  }
+
+  try {
+    const bytes = new TextEncoder().encode(generateHtmlDocument(currentFrame));
+    await saveNativeExport('ascii-art.html', 'HTML document', ['html'], bytes);
+  } catch (error) {
+    handleExportError('HTML', error);
+  }
 }
 
 async function handleCopyText(): Promise<void> {
@@ -1448,7 +1477,47 @@ async function handleExportParallax(): Promise<void> {
     alert('Parallax effect must be enabled to export');
     return;
   }
-  await downloadParallaxAsset('parallax-ascii.aparallax');
+  if (!isTauriApp()) {
+    await downloadParallaxAsset('parallax-ascii.aparallax');
+    return;
+  }
+
+  try {
+    const buffer = await exportParallaxAsset();
+    if (!buffer) return;
+    await saveNativeExport(
+      'parallax-ascii.aparallax',
+      'ASCII parallax asset',
+      ['aparallax'],
+      new Uint8Array(buffer),
+    );
+  } catch (error) {
+    handleExportError('.aparallax', error);
+  }
+}
+
+function isTauriApp(): boolean {
+  return '__TAURI_INTERNALS__' in window;
+}
+
+async function saveNativeExport(
+  defaultPath: string,
+  filterName: string,
+  extensions: string[],
+  bytes: Uint8Array,
+): Promise<void> {
+  const path = await save({
+    defaultPath,
+    filters: [{ name: filterName, extensions }],
+  });
+  if (!path) return;
+
+  await invoke('write_export_file', { path, bytes: Array.from(bytes) });
+}
+
+function handleExportError(label: string, error: unknown): void {
+  console.error(`${label} export failed:`, error);
+  alert(`${label} export failed: ${error instanceof Error ? error.message : String(error)}`);
 }
 
 // Start app
