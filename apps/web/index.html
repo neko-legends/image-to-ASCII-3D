@@ -22,10 +22,16 @@
           </div>
 
           <div class="topbar-actions">
+            <button id="open-parallax-btn" class="secondary-action icon-action" type="button" aria-label="Open .aparallax file" title="Open .aparallax file">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 6.5h6l2 2h10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-11Z"></path>
+                <path d="M3 9.5h18"></path>
+              </svg>
+            </button>
+            <input type="file" id="parallax-file-input" accept=".aparallax" hidden>
             <button id="export-png-btn" class="secondary-action" type="button" disabled>PNG</button>
             <button id="export-html-btn" class="secondary-action" type="button" disabled>HTML</button>
             <button id="copy-text-btn" class="secondary-action" type="button" disabled>Copy Text</button>
-            <button id="export-parallax-btn" class="secondary-action" type="button" disabled>.aparallax</button>
             <button id="convert-btn" class="primary-action" type="button" disabled>Convert</button>
           </div>
         </header>
@@ -265,15 +271,13 @@
                 <img id="depth-preview-image" alt="Depth preview" hidden>
               </section>
 
-              <section class="upload-area" id="parallax-import-area">
-                <input type="file" id="parallax-file-input" accept=".aparallax" hidden>
+              <button class="upload-area export-asset-card" id="export-parallax-btn" type="button" disabled>
                 <div class="upload-prompt">
-                  <span class="upload-icon">^</span>
-                  <strong>Import Asset</strong>
-                  <p>Load a saved .aparallax file.</p>
+                  <span class="upload-icon">↓</span>
+                  <strong>Export Asset</strong>
+                  <p>Save the current 3D preview as an .aparallax file.</p>
                 </div>
-                <div id="parallax-import-info" class="import-info" hidden></div>
-              </section>
+              </button>
             </section>
 
             <section class="output">

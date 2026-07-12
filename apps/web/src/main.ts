@@ -92,7 +92,7 @@ const IMAGE_MIME_TYPES = new Set([
 const SUPPORTED_IMAGE_FORMATS = 'PNG, JPEG, GIF, WebP, AVIF, BMP, SVG, or ICO';
 const PARALLAX_WHEEL_ZOOM_STEP = 10;
 
-type NativeDropTarget = 'source' | 'depth' | 'parallax';
+type NativeDropTarget = 'source' | 'depth';
 type DropPosition = { x: number; y: number };
 
 // DOM Elements - Depth map upload
@@ -175,9 +175,8 @@ const deathBtn = document.getElementById('death-btn') as HTMLButtonElement;
 const resetBtn = document.getElementById('reset-btn') as HTMLButtonElement;
 
 // DOM Elements - Parallax import
-const parallaxImportArea = document.getElementById('parallax-import-area')!;
+const openParallaxBtn = document.getElementById('open-parallax-btn') as HTMLButtonElement;
 const parallaxFileInput = document.getElementById('parallax-file-input') as HTMLInputElement;
-const parallaxImportInfo = document.getElementById('parallax-import-info')!;
 
 // DOM Elements - Actions & Output
 const convertBtn = document.getElementById('convert-btn') as HTMLButtonElement;
@@ -392,11 +391,8 @@ function setupEventListeners(): void {
   });
   
   // Parallax import
-  parallaxImportArea.addEventListener('click', () => parallaxFileInput.click());
+  openParallaxBtn.addEventListener('click', () => parallaxFileInput.click());
   parallaxFileInput.addEventListener('change', handleParallaxImport);
-  parallaxImportArea.addEventListener('dragover', handleParallaxDragOver);
-  parallaxImportArea.addEventListener('dragleave', handleParallaxDragLeave);
-  parallaxImportArea.addEventListener('drop', handleParallaxDrop);
   
   // Actions
   convertBtn.addEventListener('click', handleConvert);
@@ -464,14 +460,12 @@ function nativeDropTargetAt(position: DropPosition, scaleFactor: number): Native
 
   if (element?.closest('#upload-area')) return 'source';
   if (element?.closest('#depth-upload-area')) return 'depth';
-  if (element?.closest('#parallax-import-area')) return 'parallax';
   return null;
 }
 
 function setNativeDropHighlight(target: NativeDropTarget | null): void {
   uploadArea.classList.toggle('dragover', target === 'source');
   depthUploadArea.classList.toggle('dragover', target === 'depth');
-  parallaxImportArea.classList.toggle('dragover', target === 'parallax');
 }
 
 async function loadNativeDroppedPath(path: string, target: NativeDropTarget): Promise<void> {
@@ -482,8 +476,7 @@ async function loadNativeDroppedPath(path: string, target: NativeDropTarget): Pr
     const file = new File([bytes], name, { type: mimeTypeForFileName(name) });
 
     if (target === 'source') await loadImageFile(file);
-    else if (target === 'depth') await loadDepthMapFile(file);
-    else await loadParallaxFile(file);
+    else await loadDepthMapFile(file);
   } catch (error) {
     console.error('Failed to load dropped file:', error);
     alert(`Could not load the dropped file: ${error instanceof Error ? error.message : String(error)}`);
@@ -822,32 +815,12 @@ function applyFxSettings(): void {
   }
 }
 
-// Parallax import handlers
-function handleParallaxDragOver(e: DragEvent): void {
-  e.preventDefault();
-  parallaxImportArea.classList.add('dragover');
-}
-
-function handleParallaxDragLeave(e: DragEvent): void {
-  e.preventDefault();
-  parallaxImportArea.classList.remove('dragover');
-}
-
-function handleParallaxDrop(e: DragEvent): void {
-  e.preventDefault();
-  parallaxImportArea.classList.remove('dragover');
-  
-  const files = e.dataTransfer?.files;
-  if (files && files.length > 0) {
-    loadParallaxFile(files[0]);
-  }
-}
-
 function handleParallaxImport(e: Event): void {
   const input = e.target as HTMLInputElement;
   if (input.files && input.files.length > 0) {
-    loadParallaxFile(input.files[0]);
+    void loadParallaxFile(input.files[0]);
   }
+  input.value = '';
 }
 
 async function loadParallaxFile(file: File): Promise<void> {
@@ -861,12 +834,6 @@ async function loadParallaxFile(file: File): Promise<void> {
     debug(`Loading parallax file: ${file.name}, size: ${buffer.byteLength} bytes`);
     
     const asset = await importParallaxAsset(buffer, outputContainer);
-    
-    // Show info
-    parallaxImportInfo.textContent = `Loaded: ${asset.textureWidth}x${asset.textureHeight}`;
-    parallaxImportInfo.classList.add('loaded');
-    parallaxImportInfo.hidden = false;
-    parallaxImportArea.querySelector('.upload-prompt')?.classList.add('hidden');
     
     // Update UI
     outputInfo.textContent = `Imported parallax (${asset.segmentsX}x${asset.segmentsY} segments)`;

@@ -320,6 +320,22 @@ input[type="range"] {
   font-size: 12px;
 }
 
+.secondary-action.icon-action {
+  width: 42px;
+  min-width: 42px;
+  padding: 0;
+}
+
+.icon-action svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
 .secondary-action:hover:not(:disabled) {
   border-color: color-mix(in srgb, var(--accent) 48%, var(--border));
   color: var(--accent-2);
@@ -391,15 +407,22 @@ select:disabled {
   border-style: dashed;
   cursor: pointer;
   padding: 12px;
+  color: inherit;
+  text-align: center;
 }
 
-.upload-area:hover,
+.upload-area:hover:not(:disabled),
 .upload-area.dragover {
   border-color: var(--accent-2);
   background:
     linear-gradient(135deg, rgb(255 106 0 / 0.2), transparent 48%),
     var(--surface-2);
   box-shadow: 0 0 24px rgb(255 106 0 / 0.28);
+}
+
+.upload-area:disabled {
+  cursor: not-allowed;
+  opacity: 0.52;
 }
 
 .upload-prompt {
