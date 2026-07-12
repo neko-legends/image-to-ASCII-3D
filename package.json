@@ -19,6 +19,7 @@
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",
     "build:portable": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-portable.ps1",
+    "build:installer": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-installer.ps1",
     "test": "npm run build:packages && vitest run",
     "test:watch": "vitest",
     "clean": "node -e \"const fs=require('fs'); for (const p of ['apps/web/dist','packages/core/dist','packages/parallax-reader/dist']) fs.rmSync(p,{recursive:true,force:true});\""
