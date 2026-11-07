@@ -1,6 +1,6 @@
 [package]
 name = "image-to-ascii-3d"
-version = "26.7.12"
+version = "26.11.7"
 description = "Color image-to-ASCII converter with optional 3D parallax"
 authors = ["ImageToASCII3D contributors"]
 license = "MIT"

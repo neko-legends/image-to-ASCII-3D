@@ -2,7 +2,7 @@
 
 > Turn images into color ASCII art, add depth-driven 3D parallax, and export the result for the web or your creative pipeline.
 
-[![Version](https://img.shields.io/badge/version-26.7.12-ff7800)](https://github.com/neko-legends/image-to-ASCII-3D)
+[![Version](https://img.shields.io/badge/version-26.11.7-ff7800)](https://github.com/neko-legends/image-to-ASCII-3D)
 [![Desktop](https://img.shields.io/badge/desktop-Tauri-24c8db)](https://tauri.app/)
 [![License](https://img.shields.io/badge/license-MIT-22c55e)](LICENSE)
 
