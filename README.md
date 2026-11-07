@@ -35,6 +35,8 @@ Windows users can choose either build:
 
 The repository does not commit generated executables. Build them locally using the commands below, or download published binaries from the repository's releases when available.
 
+Linux users get an AppImage from the releases page. Make it executable (`chmod +x`) and run it, or let [Neko Legends Control Center](https://github.com/neko-legends/neko-legends-control-center) install, update and launch it for you. Tested on Omarchy (Arch Linux + Hyprland, Wayland, NVIDIA).
+
 ## Quick Start
 
 1. Open or drop a source image into the **Source** field.
